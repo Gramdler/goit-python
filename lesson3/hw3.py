@@ -2,8 +2,11 @@
 # User enter operands and operators and take result when entering "="
 # If the User enters the wrong data program send a  message about it and ask to enter the right data.
 import re
-print("Welcome to console calculater!\nPlease enter step by step operators and operands.")
+print("Welcome to console calculater!\nPlease enter step by step operands and operators.")
 print('When you want to take result enter "="\nWhen you want quit enter "q"')
+print("If you don't enter first operator and second operand = you take back firs operand")
+print("If you don't enter next operator = you lost next first operand, and take result without it")
+print("This calculator doesn't support - ().")
 
 operations = ["+", "-", "/", "*"]
 operation = []
@@ -14,6 +17,7 @@ flag = True
 
 
 def check(str):  # to economy time to write code.
+    ### Enter string, check it to right rules, end retunr sring ###
     try:
         float(str)
         return str.strip()
@@ -29,7 +33,8 @@ def check(str):  # to economy time to write code.
         return str
 
 
-def equty(operand1=[], operation=[], operand2=[]):  # enter list return list.
+def equty(operand1=[], operation=[], operand2=[]):
+    ### Enter lists: first operands, opeartions, second operands, and return float number###
     s = 0
     if len(operand1) == len(operand2) and len(operand1) == len(operation):
         while operation:
@@ -37,20 +42,16 @@ def equty(operand1=[], operation=[], operand2=[]):  # enter list return list.
             if temp == "+":
                 s = s + float(operand1.pop()) + float(operand2.pop())
                 print(operation)
-
             elif temp == "-":
                 s = s + float(operand1.pop()) - float(operand2.pop())
                 print(operation)
-
             elif temp == "*":
                 s = s + float(operand1.pop()) * float(operand2.pop())
                 print(operation)
-
             elif temp == "/":
                 try:
                     s = s + float(operand1.pop()) / float(operand2.pop())
                     print(operation)
-
                 except ZeroDivisionError:
                     print("You delete on zero! Try again!")
             else:
@@ -58,30 +59,24 @@ def equty(operand1=[], operation=[], operand2=[]):  # enter list return list.
         return s
     elif len(operand1) > len(operand2):
         print("operand1 > operand2")
-    elif len(operand1) < len(operand2):
-        print("operand1 < operand2")
-    elif len(operand1) < len(operation):
-        print("operand1 < operation")
+        s = operand1.pop()
+        return s
     elif len(operand1) > len(operation):
         print("operand1 > operation")
         s = operand1.pop()
         return s
-    elif len(operand2) < len(operation):
-        print("operand2 < operation")
-    elif len(operand2) > len(operation):
-        print("operand2 > operation")
     else:
         return 0
 
 
 while flag:
-    while checker == 0:
+    while checker == 0:  # Take first operand.
         a = check(input("Please enter operand: "))
         if a == "wrong data":
             print("You enter wrong data, please try again!")
         elif a in operations:
             print("You enter operations, this mistake, try again!")
-        elif a.isdigit and a != "=":
+        elif a != "=" and a.lower() != 'q':
             operand1.append(a)
             print(operand1)
             checker = 1
@@ -93,7 +88,7 @@ while flag:
             print(f"Your result:{a}")
             flag = False
             break
-    while checker == 1:
+    while checker == 1:  # Take operation.
         a = check(input("Please enter operarion: "))
         if a == "wrong data":
             print("You enter wrong data, please try again!")
@@ -105,27 +100,32 @@ while flag:
             flag = False
             break
         elif a == '=':
-            try:
-                if operation[(len(operation) - 1)] == "/":
-                    operand2.append("1")
-                else:
-                    operand2.append("0")
-            except IndexError:
-                operand2.append(
-                    "0") if "/" not in operation else operand2.append("1")
+            # Check if operand1 > operaor , end we have more operands1
+            if len(operand1) > len(operation):
+                if len(operand1) > 1:
+                    operand1.pop()
+            else:
+                try:
+                    if operation[(len(operation) - 1)] == "/":
+                        operand2.append("1")
+                    else:
+                        operand2.append("0")
+                except IndexError:
+                    operand2.append(
+                        "0") if "/" not in operation else operand2.append("1")
             a = equty(operand1, operation, operand2)
             print(f"Your result:{a}")
-            break
             flag = False
-        elif a.isdigit and a not in operations and a != "=":
+            break
+        elif a not in operations and a != "=":
             print("You enter operand, this mistake, try again!")
-    while checker == 2:
+    while checker == 2:  # Take second operand
         a = check(input("Please enter operand 2: "))
         if a == "wrong data":
             print("You enter wrong data, please try again!")
         elif a in operations:
             print("You enter operations, this mistake, try again!")
-        elif a.isdigit and a != "=":
+        elif a.lower() != "q" and a != "=":
             operand2.append(a)
             print(operand2)
             checker = 0
