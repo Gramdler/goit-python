@@ -8,6 +8,7 @@ from pathlib import Path
 
 
 def print_vocabluary(vocabluary={}, p=str):
+    ###Print zone, Need vocalbuary - to print, p - name of folder in string###
     print("_______________________________________")
     print(
         f"Congragulation!\nYour files in folder: {p}\n\thad been sorted:")
@@ -23,10 +24,11 @@ def print_vocabluary(vocabluary={}, p=str):
 
 def sort(folder_path=Path()):
 
-    # function sort files in formats in folder.
+    # Function sort files in formats in folder.
     # Folder_path is folder path in string, formats is vocabluary
     # where keys are the name of kind format and values are files extension
     # Give result in vocaluary like formats variant with addition keys know_extension and unknow_extension###
+
     list_formatted = {
         "image": [],
         "video": [],
