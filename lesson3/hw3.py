@@ -41,60 +41,61 @@ def equty(operand1=[], operation=[], operand2=[]):
             temp = operation.pop()
             if temp == "+":
                 s = s + float(operand1.pop()) + float(operand2.pop())
-                print(operation)
+                # print(operation)
             elif temp == "-":
                 s = s + float(operand1.pop()) - float(operand2.pop())
-                print(operation)
+                # print(operation)
             elif temp == "*":
                 s = s + float(operand1.pop()) * float(operand2.pop())
-                print(operation)
+                # print(operation)
             elif temp == "/":
                 try:
                     s = s + float(operand1.pop()) / float(operand2.pop())
-                    print(operation)
+                    # print(operation)
                 except ZeroDivisionError:
-                    print("You delete on zero! Try again!")
+                    print("You divide on zero! Try again!")
             else:
                 print("Wrong action")
         return s
     elif len(operand1) > len(operand2):
-        print("operand1 > operand2")
+        #print("operand1 > operand2")
         s = operand1.pop()
         return s
     elif len(operand1) > len(operation):
-        print("operand1 > operation")
+        #print("operand1 > operation")
         s = operand1.pop()
         return s
     else:
         return 0
 
 
+# future options, if we delete flag = False, were a == "=", we get working mini-program.
 while flag:
     while checker == 0:  # Take first operand.
-        a = check(input("Please enter operand: "))
+        a = check(input("Please enter first operand or = : "))
         if a == "wrong data":
-            print("You enter wrong data, please try again!")
+            print("You entered wrong data, please try again!")
         elif a in operations:
-            print("You enter operations, this mistake, try again!")
+            print("You entered type of operation, this mistake, try again!")
         elif a != "=" and a.lower() != 'q':
             operand1.append(a)
-            print(operand1)
+            # print(operand1)  # this and next code to quickly check code.
             checker = 1
         elif a.lower() == "q":
             flag = False
             break
         elif a == '=':
             a = equty(operand1, operation, operand2)
-            print(f"Your result:{a}")
+            print(f"Your result: {a}")
             flag = False
             break
     while checker == 1:  # Take operation.
-        a = check(input("Please enter operarion: "))
+        a = check(input("Please enter type of operarion or = : "))
         if a == "wrong data":
-            print("You enter wrong data, please try again!")
+            print("You entered wrong data, please try again!")
         elif a in operations:
             operation.append(a)
-            print(operation)
+            # print(operation)
             checker = 2
         elif a.lower() == "q":
             flag = False
@@ -114,20 +115,20 @@ while flag:
                     operand2.append(
                         "0") if "/" not in operation else operand2.append("1")
             a = equty(operand1, operation, operand2)
-            print(f"Your result:{a}")
+            print(f"Your result: {a}")
             flag = False
             break
         elif a not in operations and a != "=":
-            print("You enter operand, this mistake, try again!")
+            print("You entered operand, this mistake, try again!")
     while checker == 2:  # Take second operand
-        a = check(input("Please enter operand 2: "))
+        a = check(input("Please enter second operand or = : "))
         if a == "wrong data":
-            print("You enter wrong data, please try again!")
+            print("You entered wrong data, please try again!")
         elif a in operations:
-            print("You enter operations, this mistake, try again!")
+            print("You entered type of operation, this mistake, try again!")
         elif a.lower() != "q" and a != "=":
             operand2.append(a)
-            print(operand2)
+            # print(operand2)
             checker = 0
         elif a.lower() == "q":
             flag = False
@@ -138,6 +139,6 @@ while flag:
             else:
                 operand2.append("0")
             a = equty(operand1, operation, operand2)
-            print(f"Your result:{a}")
+            print(f"Your result: {a}")
             flag = False
             break
