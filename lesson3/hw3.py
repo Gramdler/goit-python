@@ -1,7 +1,7 @@
 ### Task 3 The simple calculator in console (+,-,/,*)###
 # User enter operands and operators and take result when entering "="
 # If the User enters the wrong data program send a  message about it and ask to enter the right data.
-import re
+
 print("Welcome to console calculater!\nPlease enter step by step operands and operators.")
 print('When you want to take result enter "="\nWhen you want quit enter "q"')
 print("If you don't enter first operator and second operand = you take back firs operand")
