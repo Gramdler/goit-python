@@ -35,8 +35,8 @@ def check(str):  # to economy time to write code.
 
 def equty(operand1=[], operation=[], operand2=[]):
     ### Enter lists: first operands, opeartions, second operands, and return float number###
-    s = 0
     if len(operand1) == len(operand2) and len(operand1) == len(operation):
+        s = 0
         while operation:
             temp = operation.pop()
             if temp == "+":
@@ -65,8 +65,6 @@ def equty(operand1=[], operation=[], operand2=[]):
         #print("operand1 > operation")
         s = operand1.pop()
         return s
-    else:
-        return 0
 
 
 # future options, if we delete flag = False, were a == "=", we get working mini-program.

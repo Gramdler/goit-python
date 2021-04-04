@@ -4,11 +4,10 @@ import sys
 from pathlib import Path
 
 # Start to work with functions
-#enclosure = False
-
+# enclosure = False
 
 def print_vocabluary(vocabluary={}, p=str):
-    ###Print zone, Need vocalbuary - to print, p - name of folder in string###
+    ### Print zone, Need vocalbuary - to print, p - name of folder in string###
     print("_______________________________________")
     print(
         f"Congragulation!\nYour files in folder: {p}\n\thad been sorted:")
@@ -21,6 +20,30 @@ def print_vocabluary(vocabluary={}, p=str):
     print()
     print("Thank you for take our service!")
 
+def check_path(str):
+    ### For check path, enter path in str, retunrt path ###
+    if Path(str).is_dir():
+        p = Path(str)
+        return p
+    else:
+        print("You give false path")
+        answer = input(
+            "If you want sort enter path (name folder) again,\n or 'l' to path in current dir,\n or 'q' to quit program:")
+        if not Path(answer).is_dir():
+            while not Path(answer).is_dir():
+                if answer.lower() == 'q':
+                    exit()
+                elif answer.lower() == 'l':
+                    p = Path()
+                    break
+                elif Path(answer).is_dir():
+                    p = Path(answer)
+                else:
+                    print(
+                        "You enter wrong path, try again \n or 'l' to path in current dir,\n or 'q' to quit program:")
+        else:
+            p = Path(answer)
+        return p
 
 def sort(folder_path=Path()):
 
@@ -50,7 +73,9 @@ def sort(folder_path=Path()):
     name_list = []
     suffix_list = []
     tmp = []
-    p = Path(folder_path)
+
+    p = check_path(folder_path)
+
     for i in p.iterdir():
         if i.is_file():
             if i.suffix:
@@ -76,7 +101,7 @@ def sort(folder_path=Path()):
     print_vocabluary(list_formatted, p)
     for i in p.iterdir():
         if i.is_dir() and not i.name.startswith('.'):
-            #print(f"files from enclosure folder {i.name}: ")
+            # print(f"files from enclosure folder {i.name}: ")
             # enclosure
             sort(f"{Path.cwd()}\{p.name}\{i.name}")
         elif i.is_file():
@@ -84,18 +109,11 @@ def sort(folder_path=Path()):
         else:
             print("If you see this message, that something went wrong")
 
+# Take first argument from conslone after name of script,
+# and check variant if user didn't give way.
 
-# Take first argument from conslone after name of script, and check variant if user didn't give way.
 try:
-    folder_path = sys.argv[1]
+    p = sys.argv[1]
 except IndexError:
-    folder_path = "Error path"
-
-# Check condition if script take wrong way.
-
-if folder_path == "Error path":
-    print("You didn't enter in console folder path.\nIf you want to sort files in the current folder, enter Y\n to finish program enter N or anything: ")
-    tmpb = input("Y/N: ")
-    folder_path = Path() if tmpb.lower() == "y" else exit()
-
-sort(folder_path)
+    p = Path()
+sort(p)
