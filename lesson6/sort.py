@@ -1,10 +1,15 @@
 ###This script sorts files in the folder which user give in an argument when open script in console. And print result in console###
 
 import sys
-from pathlib import Path
+from pathlib import *
+from hw5 import normalize
+import shutil
 
 # Start to work with functions
 # enclosure = False
+
+IGNORE_LIST = ("unidentified", "exists_formats",
+               "unexists_formats", "archives")
 
 
 def print_vocabluary(vocabluary={}, p=str):
@@ -30,19 +35,19 @@ def check_path(str):
     else:
         print("You give false path")
         answer = input(
-            "If you want sort enter path (name folder) again,\n or 'l' to path in current dir,\n or 'q' to quit program:")
+            "If you want sort enter path (name folder) again,\n or 'Y' to path in current dir,\n or 'q' to quit program:")
         if not Path(answer).is_dir():
             while not Path(answer).is_dir():
                 if answer.lower() == 'q':
                     exit()
-                elif answer.lower() == 'l':
+                elif answer.lower() == 'Y':
                     p = Path()
                     break
                 elif Path(answer).is_dir():
                     p = Path(answer)
                 else:
                     print(
-                        "You enter wrong path, try again \n or 'l' to path in current dir,\n or 'q' to quit program:")
+                        "You enter wrong path, try again \n or 'Y' to path in current dir,\n or 'q' to quit program:")
         else:
             p = Path(answer)
         return p
@@ -56,28 +61,31 @@ def sort(folder_path=Path()):
     # Give result in vocaluary like formats variant with addition keys know_extension and unknow_extension###
 
     list_formatted = {
-        "image": [],
+        "images": [],
         "video": [],
-        "doc": [],
-        "music": [],
-        "archive": [],
+        "documents": [],
+        "audio": [],
+        "archives": [],
         "unidentified": [],
         "exists_formats": [],
         "unexists_formats": []
     }  # vocabluary for result function
 
     formats = {
-        "image": ["JPEG", "PNG", "JPG", "SVG"],
+        "images": ["JPEG", "PNG", "JPG", "SVG"],
         "video": ["AVI", "MP4", "MOV", "MKV"],
-        "doc": ["DOC", "DOCX", "TXT", "PDF", "XLSX", "PPTX"],
-        "music": ["MP3", "OGG", "WAV", "AMR", "M4A"],
-        "archive": ["ZIP", "GZ", "TAR", "RAR"]
+        "documents": ["DOC", "DOCX", "TXT", "PDF", "XLSX", "PPTX"],
+        "audio": ["MP3", "OGG", "WAV", "AMR", "M4A"],
+        "archives": ["ZIP", "GZ", "TAR", "RAR"]
     }
+
     name_list = []
     suffix_list = []
     tmp = []
 
     p = check_path(folder_path)
+
+    rename()
 
     for i in p.iterdir():
         if i.is_file():
@@ -101,7 +109,10 @@ def sort(folder_path=Path()):
         for value in suffix_list:
             if value not in list_formatted["exists_formats"]:
                 list_formatted["unexists_formats"].append(value)
-    print_vocabluary(list_formatted, p)
+
+    moving_files(list_formatted)
+    #print_vocabluary(list_formatted, p)
+
     for i in p.iterdir():
         if i.is_dir() and not i.name.startswith('.'):
             # print(f"files from enclosure folder {i.name}: ")
@@ -115,9 +126,48 @@ def sort(folder_path=Path()):
 # Take first argument from conslone after name of script,
 # and check variant if user didn't give way.
 
+# added code for home work 6
+
+
+def ren(file=Path()):
+    suf = file.suffix
+    a = normalize(file.stem)
+    file.rename(a + suf)
+
+
+def rename(p=Path()):
+    for file in p.iterdir():
+        if file.is_file():
+            ren(file)
+
+
+def moving(target_folder_add="", list_of_suffixes=[]):
+    target_folder = Path(target_folder_add)
+    target_folder.mkdir(parents=True, exist_ok=True)
+    source_folder = Path('.')
+    for i in list_of_suffixes:
+        files = source_folder.glob(f'*{i.lower()}')
+        for file in files:
+            filename = file.name
+            target_path = target_folder.joinpath(filename)
+            file.rename(target_path)
+
+
+def moving_files(a={}):
+    for key, value in a.items():
+        if key not in IGNORE_LIST and value != []:
+            moving(key, value)
+        if key == 'archives':
+            for archive_name in value:
+                name = archive_name.split(".")
+                shutil.unpack_archive(
+                    archive_name, f"archives\\{name[0]}")
+
 
 try:
     p = sys.argv[1]
 except IndexError:
     p = Path()
+
+
 sort(p)
