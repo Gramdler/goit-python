@@ -16,8 +16,8 @@ def printfun(li=[]):
 
 
 def congratulate(users={}):
+    counter = 0
     current_date = datetime.now()
-    print(current_date)
     Mon = []
     Tue = []
     Wed = []
@@ -25,10 +25,13 @@ def congratulate(users={}):
     Fri = []
     for key, value in users.items():
         date = datetime.strptime(value, "%d-%m-%Y")
-        print(date)
         date = date.replace(year=current_date.year)
-        print(date)
-        if (current_date - timedelta(days=7)) < date < (current_date + timedelta(days=7)):
+        x = int(current_date.weekday())
+        while x < 5:
+            x += 1
+        left_week = (current_date + timedelta(days=x-2))
+        next_week = (current_date + timedelta(days=x+5))
+        if left_week < date < next_week:
             if datetime.strftime(date, '%w') == "2":
                 Tue.append(key)
             elif datetime.strftime(date, '%w') == "3":
