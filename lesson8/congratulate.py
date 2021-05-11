@@ -15,8 +15,24 @@ def printfun(li=[]):
         pass
 
 
+def year_checker(current_date):
+    for corrector in range(0, 7):
+        if int(current_date.weekday()) == corrector:
+            year_checker = current_date + timedelta(days=14-corrector)
+    return year_checker
+
+
+def right_year(current_date, date):
+    checked_year = year_checker(current_date)
+    if checked_year.year < current_date.year:
+        date = date.replace(year=current_date.year)
+    else:
+        date = date.replace(year=checked_year.year)
+    return date
+
+
 def congratulate(users={}):
-    counter = 0
+
     current_date = datetime.now()
     Mon = []
     Tue = []
@@ -25,7 +41,7 @@ def congratulate(users={}):
     Fri = []
     for key, value in users.items():
         date = datetime.strptime(value, "%d-%m-%Y")
-        date = date.replace(year=current_date.year)
+        date = right_year(current_date, date)
         x = int(current_date.weekday())
         while x < 5:
             x += 1
@@ -62,7 +78,7 @@ def congratulate(users={}):
 if __name__ == "__main__":
 
     USERS = {
-        "Bill": "16-05-1980",
+        "Bill": "01-01-1980",
         "Jill": "17-05-1972",
         "Kim": "21-05-1973",
         "Jan": "21-05-1998"
