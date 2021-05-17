@@ -3,7 +3,7 @@ import re
 import random
 
 voca_phone = {}
-name, number = None, None
+name = number = ""
 
 
 def add(s=''):
@@ -23,17 +23,18 @@ def change(s=''):
 
 def phone(s=''):
     name, number = sep_text(s)
+    phone_number = ""
     try:
-        phone = voca_phone[name]
+        phone_number = voca_phone[number]
     except KeyError:
         print("Wrong name, please add name and phone first")
-    return phone
+    return phone_number
 
 
 def show_all(*args):
     list_of_contacts = ""
     for key, value in voca_phone.items():
-        list_of_contacts += f"{key} {value}"
+        list_of_contacts += f"Name: {key}\n Number: {value} \n"
     return list_of_contacts
 
 
@@ -64,13 +65,11 @@ def sentece_writer(x=[]):
 def sep_text(x=''):
     name = ""
     number = ""
-    t = " ".split(x)
-    for word in t[1:]:
-        checker_text = re.findall(r"\w+", word)
-        if word != checker_text[0]:
-            name += str(word)+" "
-        elif word.isdigit():
-            number = word
+    t = x.split(" ")
+    if t:
+        for word in t[1:-1]:
+            name += word + " "
+        number = t[-1]
     name = name.strip()
     return name, number
 
@@ -88,7 +87,7 @@ def handler(text):
     a = list_text[0]
     a = a.casefold()
     intent = get_intent(a)  # 1. Попытаться понять намерение
-    print(intent)
+
     if intent is not None:       # 2. Ответить в соответствии намеренения
         x = random.choice(BOT_CONFIG['intents']
                           [intent]['responses'])(sentence)
