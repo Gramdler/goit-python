@@ -3,7 +3,7 @@ import re
 import random
 
 voca_phone = {}
-name = number = ""
+# name = number = ""
 
 
 def add(s=''):
@@ -14,11 +14,17 @@ def add(s=''):
 
 def change(s=''):
     name, number = sep_text(s)
-    try:
-        voca_phone[name] = number
-    except KeyError:
-        print("Wrong name, please add name and phone first")
-    return "Contact had been changed."
+    tmp = ""
+    if voca_phone:
+        for key in voca_phone:
+            if key == number:
+                voca_phone[name] = number
+                tmp = "Contact had been changed."
+            else:
+                tmp = "Wrong name, please add name and phone first"
+    else:
+        tmp = "You should first add name and phone"
+    return tmp
 
 
 def phone(s=''):
