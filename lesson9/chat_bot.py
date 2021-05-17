@@ -85,7 +85,9 @@ def get_intent(text):
 def handler(text):
     list_text = re.findall(r"\w+|[\w+][\w+]|[\w+][\w+][\w+][\d{7,9}]", text)
     sentence = sentece_writer(list_text)
-    intent = get_intent(list_text[0])  # 1. Попытаться понять намерение
+    a = list_text[0]
+    a = a.casefold()
+    intent = get_intent(a)  # 1. Попытаться понять намерение
     print(intent)
     if intent is not None:       # 2. Ответить в соответствии намеренения
         x = random.choice(BOT_CONFIG['intents']
