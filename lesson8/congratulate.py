@@ -45,8 +45,8 @@ def congratulate(users={}):
         x = int(current_date.weekday())
         while x < 5:
             x += 1
-        left_week = (current_date + timedelta(days=x-2))
-        next_week = (current_date + timedelta(days=x+5))
+        left_week = (current_date + timedelta(days=x-4))
+        next_week = (current_date + timedelta(days=x+3))
         if left_week < date < next_week:
             if datetime.strftime(date, '%w') == "2":
                 Tue.append(key)
@@ -79,9 +79,9 @@ if __name__ == "__main__":
 
     USERS = {
         "Bill": "01-01-1980",
-        "Jill": "17-05-1972",
-        "Kim": "21-05-1973",
-        "Jan": "21-05-1998"
+        "Jill": "12-06-1972",
+        "Kim": "17-06-1973",
+        "Jan": "18-06-1998"
     }
 
     congratulate(USERS)
