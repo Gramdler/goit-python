@@ -68,6 +68,32 @@ def sentece_writer(x=[]):
     return sentence
 
 
+def key_finder(x=''):
+    key = ""
+    a = re.findall(r"\w+", x)
+    n = a[-1]
+    tn = re.findall(r"\d+", n)
+    if a[0] in BOT_CONFIG['intents'].keys():
+        if n in tn:
+            for value in a[1:-1]:
+                key += value + " "
+            key = key.casefold().strip()
+        else:
+            for value in a[1:]:
+                key += value + " "
+            key = key.casefold().strip()
+    else:
+        if n in tn:
+            for value in a[0:-1]:
+                key += value + " "
+            key = key.casefold().strip()
+        else:
+            for value in a:
+                key += value + " "
+            key = key.casefold().strip()
+    return key
+
+
 def sep_text(x=''):
     name = ""
     number = ""
@@ -92,8 +118,8 @@ def handler(text):
     sentence = sentece_writer(list_text)
     a = list_text[0]
     a = a.casefold()
+    key = key_finder(text)
     intent = get_intent(a)  # 1. Попытаться понять намерение
-
     if intent is not None:       # 2. Ответить в соответствии намеренения
         x = random.choice(BOT_CONFIG['intents']
                           [intent]['responses'])(sentence)
@@ -115,7 +141,7 @@ BOT_CONFIG = {
             'examples': ['hello', 'hi', 'hi!', 'good day!'],
             'responses': [hello]
         },
-        'bye': {
+        'good bye': {
             'examples': ['good bye', 'close', 'exit', '.'],
             'responses': [good_bye]
         },
@@ -131,8 +157,8 @@ BOT_CONFIG = {
             'examples': ['phone'],
             'responses': [phone]
         },
-        'show_all': {
-            'examples': ['show_all'],
+        'show all': {
+            'examples': ['show all'],
             'responses': [show_all]
         },
         'help': {
