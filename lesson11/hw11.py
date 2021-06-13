@@ -132,7 +132,6 @@ class Birthday(Field):
     def value(self, birthday):
         try:
             self.__value = datetime.strptime(birthday, "%d-%m-%Y")
-            print("This is the correct date string format.")
         except ValueError:
             print("This is the incorrect date string format. It should be DD-MM-YYYY")
 
