@@ -14,17 +14,18 @@ class AddressBook(UserDict):
         for key in self.data.keys():
             if br <= n:
                 y = self.data.get(key)
-                if not (y.phones) and not (y.birthday):
+                if not (y.phones[br].value) and not (y.birthday.value):
                     print("Record {}".format(y.name.value))
-                elif (y.phones) and not (y.birthday):
+                elif (y.phones[br].value) and not (y.birthday.value):
                     print("Record {}, phone number {}.".format(
-                        y.name.value, y.phones[0].value))
-                elif not (y.phones) and y.birthday:
+                        y.name.value, y.phones[br].value))
+                elif not (y.phones[br].value) and y.birthday.value:
                     print("Record {}, birthday {}, birhday coming through {} days.".format(
                         y.name.value, y.birthday.value, y.days_to_birthday()))
                 else:
-                    print("Record {}, phone number {}, birthday {}, birhday coming through {} days.".format(y.name.value, y.phones[0].value,
+                    print("Record {}, phone number {}, birthday {}, birhday coming through {} days.".format(y.name.value, y.phones[br].value,
                                                                                                             y.birthday.value, y.days_to_birthday()))
+                br += 1
             else:
                 break
 
@@ -142,12 +143,12 @@ if __name__ == "__main__":
     name.value = "Vasya"
 
     phone = Phone()
-    phone.value = "7123522222"
+    phone.value = "380985202222"
 
     rec = Record(name)
 
     birh = Birthday()
-    birh.value = str("28-06-89")
+    birh.value = str("28-06-1989")
 
     rec.app_phone(phone)
     rec.add_birthday(birh)
