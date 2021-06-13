@@ -1,5 +1,6 @@
 from collections import UserDict
 from datetime import datetime
+import copy
 
 
 class AddressBook(UserDict):
@@ -14,16 +15,16 @@ class AddressBook(UserDict):
         for key in self.data.keys():
             if br <= n:
                 y = self.data.get(key)
-                if not (y.phones[br].value) and not (y.birthday.value):
+                if not (y.phones[0].value) and not (y.birthday.value):
                     print("Record {}".format(y.name.value))
-                elif (y.phones[br].value) and not (y.birthday.value):
+                elif (y.phones[0].value) and not (y.birthday.value):
                     print("Record {}, phone number {}.".format(
-                        y.name.value, y.phones[br].value))
-                elif not (y.phones[br].value) and y.birthday.value:
+                        y.name.value, y.phones[0].value))
+                elif not (y.phones[0].value) and y.birthday.value:
                     print("Record {}, birthday {}, birhday coming through {} days.".format(
                         y.name.value, y.birthday.value, y.days_to_birthday()))
                 else:
-                    print("Record {}, phone number {}, birthday {}, birhday coming through {} days.".format(y.name.value, y.phones[br].value,
+                    print("Record {}, phone number {}, birthday {}, birhday coming through {} days.".format(y.name.value, y.phones[0].value,
                                                                                                             y.birthday.value, y.days_to_birthday()))
                 br += 1
             else:
@@ -140,19 +141,23 @@ if __name__ == "__main__":
 
     name = Name()
     name.value = "Vasya"
-
     phone = Phone()
     phone.value = "380985202222"
-
     rec = Record(name)
-
     birh = Birthday()
     birh.value = str("28-06-1989")
-
     rec.app_phone(phone)
     rec.add_birthday(birh)
+    rec2 = copy.deepcopy(rec)
+    rec2.name.value = "Petya"
+    rec3 = copy.deepcopy(rec)
+    rec3.name.value = "Lisa"
+    rec4 = copy.deepcopy(rec)
+    rec4.name.value = "Vera"
 
     ad = AddressBook()
     ad.add_record(rec)
-
-    ad.iterator(2)
+    ad.add_record(rec2)
+    ad.add_record(rec3)
+    ad.add_record(rec4)
+    ad.iterator(3)
